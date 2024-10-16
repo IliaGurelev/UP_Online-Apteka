@@ -1,33 +1,91 @@
 <template>
-  <header>
+  <header class="header">
     <a href="/" class="title" >Online-Аптека</a>
-    <ButtonNavigation link="/user" class="button-user"> 
-        <UserIconVue class="button-user__icon" />
-    </ButtonNavigation>
+    <div class="header__wrap">
+      <div class="search">
+        <input class="search__input" type="text">
+        <button class="search__button">
+          <SearchIconVue class="search__button-icon" />
+        </button>
+      </div>
+      <ButtonNavigation link="/user" class="button-user"> 
+          <UserIconVue class="button-user__icon" />
+      </ButtonNavigation>
+    </div>
   </header>
   <main>
     <CardLongList 
+      class="cards-list"
       :products=basketMock
     />
+    <OrderMenu class="order-menu" :count="countTovar" :price="priceTovar" />
   </main>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 import basketMock from '@/mock/Basket.js';
 
 import UserIconVue from '@/components/icons/UserIcon.vue';
+import SearchIconVue from '@/components/icons/SearchIcon.vue';
 import ButtonNavigation from '@/components/ButtonNavigation.vue';
 import CardLongList from '@/components/CardLongList.vue';
+import OrderMenu from '@/components/OrderMenu.vue';
+
+const countTovar = ref(basketMock.length);
+const priceTovar = ref(basketMock.reduce((price, item) => {
+  return price + item.price * item.count
+}, 0));
 </script>
 
 <style lang="scss" scoped>
-header{
+
+.header {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 50px;
   margin-bottom: 30px;
+
+  &__wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1400px;
+    width: 100%;
+    gap: 15px;
+  }
 }
+
+.search {
+    position: relative;
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+    background-color: #EFEFEF;
+    border-radius: 40px;
+    font-size: 24px;
+    padding: 15px 25px;
+
+    &__input {
+      width: 100%;
+    }
+
+    &__button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 59px;
+      height: 100%;
+      background-color: #93A368;
+      border-radius: 50%;
+
+      &-icon {
+        width: 29px;
+        height: 100%;
+      }
+    }
+  }
 
 main {
   padding: 0px 50px;
@@ -53,5 +111,16 @@ main {
     &__icon {
         width: 29px;
     }
+}
+
+.cards-list {
+  margin-bottom: 150px;
+}
+
+.order-menu {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 </style>
