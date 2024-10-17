@@ -37,6 +37,7 @@ const props = defineProps({
         width: 100%;  
         height: 370px;
         row-gap: 10px;
+        cursor: pointer;
 
         &__image {
             width: 100%;

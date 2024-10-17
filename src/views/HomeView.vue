@@ -4,7 +4,7 @@
             <h1 class="title" >Online-Аптека</h1>
             <div class="navigation">
                 <div class="search">
-                    <input class="search__input" type="text">
+                    <input placeholder="Поиск товаров..." v-model="searchQuery" class="search__input" type="text">
                     <button class="search__button">
                         <SearchIconVue class="search__button-icon" />
                     </button>
@@ -19,7 +19,7 @@
         </header>
         <main>
             <CardList v-if="products.length > 0"
-                :cards=products
+                :cards=filteredProducts
             /> 
             <div v-else class="not-found">
                 <p>Ничего не найдено</p>
@@ -30,7 +30,7 @@
 
 <script setup>
 import axios from 'axios';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 import CardList from '@/components/CardList.vue';
 import SearchIconVue from '@/components/icons/SearchIcon.vue';
@@ -38,22 +38,28 @@ import BasketIconVue from '@/components/icons/BasketIcon.vue';
 import UserIconVue from '@/components/icons/UserIcon.vue';
 import ButtonNavigation from '@/components/ButtonNavigation.vue';
 
-import cardsMock from '@/mock/Cards.js';
-
+import { fetchProducts } from '@/apiService';
 
 const products = ref([]);
 
-async function fetchData() {
-    try {
-        const response = await axios.get('http://localhost:5000/api/product');
-        products.value = response.data;
-    } catch (error) {
-        console.error('Ошибка получения данных:', error);
-    }
+const searchQuery = ref('');
+
+async function loadProducts() {
+  try {
+    products.value = await fetchProducts(); 
+  } catch (error) {
+    console.error('Ошибка загрузки продуктов:', error);
+  }
 }
 
+const filteredProducts = computed(() => {
+    return products.value.filter(product => 
+        product.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
+});
+
 onMounted(() => {
-    fetchData();
+    loadProducts();
 });
 </script>
 
