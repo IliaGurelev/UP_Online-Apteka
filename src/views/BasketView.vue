@@ -24,6 +24,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
 
 import basketMock from '@/mock/Basket.js';
 

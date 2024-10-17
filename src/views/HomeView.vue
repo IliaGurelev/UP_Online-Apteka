@@ -18,14 +18,20 @@
             </div>
         </header>
         <main>
-            <CardList
-                :cards=cardsMock
-            />
+            <CardList v-if="products.length > 0"
+                :cards=products
+            /> 
+            <div v-else class="not-found">
+                <p>Ничего не найдено</p>
+            </div>
         </main>
     </div>
 </template>
 
 <script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+
 import CardList from '@/components/CardList.vue';
 import SearchIconVue from '@/components/icons/SearchIcon.vue';
 import BasketIconVue from '@/components/icons/BasketIcon.vue';
@@ -34,6 +40,21 @@ import ButtonNavigation from '@/components/ButtonNavigation.vue';
 
 import cardsMock from '@/mock/Cards.js';
 
+
+const products = ref([]);
+
+async function fetchData() {
+    try {
+        const response = await axios.get('http://localhost:5000/api/product');
+        products.value = response.data;
+    } catch (error) {
+        console.error('Ошибка получения данных:', error);
+    }
+}
+
+onMounted(() => {
+    fetchData();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -110,4 +131,11 @@ import cardsMock from '@/mock/Cards.js';
             width: 29px;
         }
     }
+
+.not-found {
+    width: 100%;
+    text-align: center;
+    color: #4e4e4e;
+    font-size: 25px;
+}
 </style>
