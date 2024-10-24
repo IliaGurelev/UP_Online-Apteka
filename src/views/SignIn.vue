@@ -3,15 +3,16 @@
     <a href="/" class="title" >Online-Аптека</a>
   </header>
   <main>
-    <form action="" class="sign-in">
+    <form @submit.prevent="() => submitForm(email, password)" action="" class="sign-in">
       <h2 class="sign-in__title">Вход</h2>
+      <p>{{messageLogin}}</p>
       <div class="sign-in__wrap">
         <label class="sign-in__label" for="email">Почта</label>
-        <input class="sign-in__input" type="text" id="email" name="email">
+        <input class="sign-in__input" type="text" id="email" name="email" v-model="email">
       </div>
       <div class="sign-in__wrap">
         <label class="sign-in__label" for="password">Пароль</label>
-        <input class="sign-in__input" type="password" id="password" name="password">
+        <input class="sign-in__input" type="password" id="password" name="password" v-model="password">
       </div>
       <button class="sign-in__button">Войти</button>
     </form>
@@ -20,7 +21,26 @@
 </template>
 
 <script setup>
+import { loginUser } from '@/apiService';
+import { ref } from 'vue';
+
 import BlobsIcon from '@/components/icons/BlobsIcon.vue';
+import router from '@/router/index.js';
+
+const email = ref('');
+const password = ref('');
+const messageLogin = ref('');
+const response = ref('');
+
+async function submitForm(email, password) {
+  response.value = await loginUser(email, password);
+  if(response.value == true) {
+    router.push('/user');
+  }
+  else {
+    messageLogin.value = response.value;
+  }
+} 
 </script>
 
 <style lang="scss" scoped>
@@ -83,7 +103,7 @@ main {
   }
 
   &__input {
-    background-color: #dddddd;
+    background-color: #c7c7c7;
     font-size: 30px;
     padding: 8px;
     border-radius: 10px;

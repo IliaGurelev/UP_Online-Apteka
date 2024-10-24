@@ -87,7 +87,7 @@ onMounted(() => {
         position: relative;
         width: 100%;
         display: flex;
-        background-color: #EFEFEF;
+        background-color: #cfcfcf;
         border-radius: 40px;
         font-size: 24px;
         padding: 15px 25px;

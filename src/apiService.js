@@ -16,3 +16,17 @@ export async function fetchProducts() {
     throw error; 
   }
 }
+
+export async function loginUser(emailUser, passwordUser) {
+  try {
+    const response = await apiClient.post('/login', {
+      email: emailUser,
+      password: passwordUser
+    });
+    const message = response.data;
+    console.log(message)
+    return message; 
+  } catch (error) {
+    console.error(error);
+  }
+}

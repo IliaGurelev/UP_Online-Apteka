@@ -16,7 +16,7 @@ const pool = new Pool({
   host: 'localhost',
   database: 'OnlineAptekaGurelev',
   password: '0000',
-  port: 5434, 
+  port: 5433, 
 });
 
 pool.query('SELECT NOW()', (err, res) => {
@@ -27,7 +27,6 @@ pool.query('SELECT NOW()', (err, res) => {
   }
 });
 
-// Пример API-эндпойнта для получения данных из базы данных
 app.get('/api/product', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM product');
@@ -35,6 +34,30 @@ app.get('/api/product', async (req, res) => {
   } catch (err) {
     console.error('Ошибка получения данных:', err);
     res.status(500).send('Ошибка сервера');
+  }
+});
+
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+      const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+
+      // Проверка существует ли пользователь
+      if (result.rows.length > 0) {
+        const user = result.rows[0];
+        
+        if (user.password === password) { 
+          return res.send(true);
+        } else {
+          return res.send('Неправильный пароль');
+        }
+      } else {
+        return res.send('Пользователь не найден.');
+      }
+  } catch (error) {
+    console.error(error);
+    return res.send('Произошла ошибка при аутентификации.');
   }
 });
 
