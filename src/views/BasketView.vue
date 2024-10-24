@@ -2,12 +2,7 @@
   <header class="header">
     <a href="/" class="title" >Online-Аптека</a>
     <div class="header__wrap">
-      <div class="search">
-        <input class="search__input" type="text">
-        <button class="search__button">
-          <SearchIconVue class="search__button-icon" />
-        </button>
-      </div>
+      <SearchInput />
       <ButtonNavigation link="/user" class="button-user"> 
           <UserIconVue class="button-user__icon" />
       </ButtonNavigation>
@@ -29,10 +24,9 @@ import axios from 'axios';
 import basketMock from '@/mock/Basket.js';
 
 import UserIconVue from '@/components/icons/UserIcon.vue';
-import SearchIconVue from '@/components/icons/SearchIcon.vue';
 import ButtonNavigation from '@/components/ButtonNavigation.vue';
 import CardLongList from '@/components/CardLongList.vue';
-import OrderMenu from '@/components/OrderMenu.vue';
+import SearchInput from '@/components/SearchInput.vue';
 
 const countTovar = ref(basketMock.length);
 const priceTovar = ref(basketMock.reduce((price, item) => {

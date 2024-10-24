@@ -2,12 +2,7 @@
   <header class="header">
     <a href="/" class="title" >Online-Аптека</a>
     <div class="header__wrap">
-      <div class="search">
-        <input class="search__input" type="text">
-        <button class="search__button">
-          <SearchIcon class="search__button-icon" />
-        </button>
-      </div>
+      <SearchInput />
       <ButtonNavigation link="/basket" class="button-basket"> 
           <BasketIcon class="button-basket__icon" />
       </ButtonNavigation>
@@ -56,7 +51,7 @@
 
 <script setup>
 import BasketIcon from '@/components/icons/BasketIcon.vue';
-import SearchIcon from '@/components/icons/SearchIcon.vue';
+import SearchInput from '@/components/SearchInput.vue';
 import UserIconVue from '@/components/icons/UserIcon.vue';
 </script>
 
